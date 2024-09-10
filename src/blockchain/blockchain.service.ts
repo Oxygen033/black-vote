@@ -1,20 +1,18 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ethers } from 'ethers';
+import * as fs from 'fs';
 
 @Injectable()
 export class BlockchainService implements OnModuleInit {
     private provider: ethers.JsonRpcProvider;
     private contract: ethers.Contract;
 
-    private contractAdress = process.env.VOTING_CONTRACT_ADDRESS || 'http://127.0.0.1:8545';
-    private abi = [
-        "function vote(string memory candidate) public",
-        "function getVotes(string memory candidate) public view returns (uint256)"
-    ];
+    private contractAdress = process.env.VOTING_CONTRACT_ADDRESS;
 
     async onModuleInit() {
+        const contractfile = JSON.parse(fs.readFileSync('src/blockchain/artifacts/artifacts/src/blockchain/contracts/Voting.sol/Voting.json', 'utf8'));
         this.provider = new ethers.JsonRpcProvider(`${process.env.CONTRACT_DEPLOY_URL}`);
-        this.contract = new ethers.Contract(this.contractAdress, this.abi, await this.provider.getSigner());
+        this.contract = new ethers.Contract(this.contractAdress, contractfile.abi, await this.provider.getSigner());
     }
 
     async vote(candidate: string) {
