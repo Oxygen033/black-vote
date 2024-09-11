@@ -36,10 +36,6 @@ lerna-debug.log*
 node_modules
 .env
 
-# Hardhat files
-/cache
-/artifacts/
-
 # TypeChain files
 /typechain
 /typechain-types
@@ -51,3 +47,6 @@ node_modules
 # Hardhat Ignition default folder for deployments against a local node
 ignition/deployments/chain-31337
 
+# Hardhat files
+/cache
+/artifacts

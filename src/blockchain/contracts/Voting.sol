@@ -29,11 +29,11 @@ contract Voting {
     function createVote(
         string memory voteName,
         string[] memory _candidates
-    ) public {
-        OpenVote storage newVote = openVotes[
-            keccak256(abi.encodePacked(voteName))
-        ];
+    ) public returns (bytes32) {
+        bytes32 votingId = keccak256(abi.encodePacked(voteName));
+        OpenVote storage newVote = openVotes[votingId];
         newVote.candidates = _candidates;
+        return votingId;
     }
 
     function getCandidates(

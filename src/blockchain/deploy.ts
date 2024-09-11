@@ -4,7 +4,7 @@ import * as fs from 'fs';
 async function main() {
     const Voting = await ethers.getContractFactory("Voting");
 
-    const voting = await Voting.deploy([]);
+    const voting = await Voting.deploy();
 
     const deploymentReceipt = await voting.deploymentTransaction().wait();
 
