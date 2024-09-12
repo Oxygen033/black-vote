@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { ForbiddenException, Injectable, OnModuleInit } from '@nestjs/common';
 import { ethers } from 'ethers';
 import * as fs from 'fs';
 
@@ -16,6 +16,9 @@ export class BlockchainService implements OnModuleInit {
     }
 
     async vote(votingId: string, candidate: string) {
+        if (!JSON.stringify(await this.contract.getCandidates(votingId)).includes(candidate)) {
+            throw new ForbiddenException('This candidate doesnt exist');
+        }
         const tx = await this.contract.vote(votingId, candidate);
         await tx.wait();
     }
@@ -24,7 +27,21 @@ export class BlockchainService implements OnModuleInit {
         return await this.contract.getVotes(votingId, candidate);
     }
 
+    async getAllVotes(votingId: string) {
+        const candidates = await this.getCandidates(votingId);
+
+        const candidateVotes = {};
+
+        for (const candidate of candidates) {
+            let votes = await this.getVotes(votingId, candidate);
+            candidateVotes[candidate] = votes.toString();
+        }
+
+        return candidateVotes;
+    }
+
     async getCandidates(votingId: string) {
+        console.log(typeof (await this.contract.getCandidates(votingId)));
         return await this.contract.getCandidates(votingId);
     }
 
