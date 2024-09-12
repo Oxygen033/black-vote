@@ -22,9 +22,9 @@ export class BlockchainController {
         return await this.blockchainService.getVotes(voting, candidate);
     }
 
-    @Get('get-candidates/:voting/:candidate')
-    async getCandidates(@Param('voting') voting: string, @Param('candidate') candidate: string) {
-        return await this.blockchainService.getVotes(voting, candidate);
+    @Get('get-candidates/:voting')
+    async getCandidates(@Param('voting') voting: string) {
+        return await this.blockchainService.getCandidates(voting);
     }
 
     @Post('create-voting/:votingName')

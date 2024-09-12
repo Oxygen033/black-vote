@@ -2,6 +2,8 @@
 pragma solidity ^0.8.0;
 
 contract Voting {
+    event VotingCreated(bytes32 votingId, string voteName);
+
     struct OpenVote {
         string[] candidates;
         mapping(address => bool) voters;
@@ -27,13 +29,15 @@ contract Voting {
     }
 
     function createVote(
-        string memory voteName,
+        string memory votingName,
         string[] memory _candidates
-    ) public returns (bytes32) {
-        bytes32 votingId = keccak256(abi.encodePacked(voteName));
+    ) public {
+        bytes32 votingId = keccak256(
+            abi.encodePacked(votingName, msg.sender, block.timestamp)
+        );
         OpenVote storage newVote = openVotes[votingId];
         newVote.candidates = _candidates;
-        return votingId;
+        emit VotingCreated(votingId, votingName);
     }
 
     function getCandidates(
