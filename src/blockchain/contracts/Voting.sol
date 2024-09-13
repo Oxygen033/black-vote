@@ -4,28 +4,29 @@ pragma solidity ^0.8.0;
 contract Voting {
     event VotingCreated(bytes32 votingId, string voteName);
 
-    struct OpenVote {
+    struct OpenVoting {
+        address author;
         string[] candidates;
         mapping(address => bool) voters;
         mapping(string => uint256) votes;
     }
 
-    mapping(bytes32 => OpenVote) private openVotes;
+    mapping(bytes32 => OpenVoting) private openVotings;
 
     function vote(bytes32 voteId, string memory candidate) public {
         require(
-            !openVotes[voteId].voters[msg.sender],
+            !openVotings[voteId].voters[msg.sender],
             'You have already voted.'
         );
-        openVotes[voteId].voters[msg.sender] = true;
-        openVotes[voteId].votes[candidate]++;
+        openVotings[voteId].voters[msg.sender] = true;
+        openVotings[voteId].votes[candidate]++;
     }
 
     function getVotes(
         bytes32 voteId,
         string memory candidate
     ) public view returns (uint256) {
-        return openVotes[voteId].votes[candidate];
+        return openVotings[voteId].votes[candidate];
     }
 
     function createVote(
@@ -35,14 +36,23 @@ contract Voting {
         bytes32 votingId = keccak256(
             abi.encodePacked(votingName, msg.sender, block.timestamp)
         );
-        OpenVote storage newVote = openVotes[votingId];
+        OpenVoting storage newVote = openVotings[votingId];
         newVote.candidates = _candidates;
+        newVote.author = msg.sender;
         emit VotingCreated(votingId, votingName);
     }
 
     function getCandidates(
         bytes32 voteId
     ) public view returns (string[] memory) {
-        return openVotes[voteId].candidates;
+        return openVotings[voteId].candidates;
+    }
+
+    function addCandidate(bytes32 votingId, string memory candidate) public {
+        require(
+            openVotings[votingId].author == msg.sender,
+            'You are not author of voting!'
+        );
+        openVotings[votingId].candidates.push(candidate);
     }
 }

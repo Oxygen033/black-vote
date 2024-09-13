@@ -50,3 +50,6 @@ ignition/deployments/chain-31337
 # Hardhat files
 /cache
 /artifacts
+
+#black-vote-gitignore
+/src/blockchain/artifacts/

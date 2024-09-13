@@ -32,6 +32,16 @@ export class BlockchainController {
         return await this.blockchainService.getCandidates(voting);
     }
 
+    @Post('add-candidate/:votingId/:candidate')
+    async addCandidate(@Param('votingId') voting: string, @Param('candidate') candidate: string) {
+        try {
+            await this.blockchainService.addCandidate(voting, candidate);
+        } catch (ex) {
+            throw new InternalServerErrorException(ex.reason);
+        }
+        return 'Candidate added successfully';
+    }
+
     @Post('create-voting/:votingName')
     async createVoting(@Param('votingName') votingName: string, @Query('candidates', new ParseArrayPipe({ items: String, separator: ',' })) candidates: string[]) {
         return await this.blockchainService.createVoting(votingName, candidates);

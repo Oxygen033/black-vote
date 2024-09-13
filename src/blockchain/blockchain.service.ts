@@ -41,8 +41,11 @@ export class BlockchainService implements OnModuleInit {
     }
 
     async getCandidates(votingId: string) {
-        console.log(typeof (await this.contract.getCandidates(votingId)));
         return await this.contract.getCandidates(votingId);
+    }
+
+    async addCandidate(votingId: string, candidateName: string) {
+        return await this.contract.addCandidate(votingId, candidateName);
     }
 
     async createVoting(_votingName: string, _candidates: string[]) {
@@ -50,6 +53,7 @@ export class BlockchainService implements OnModuleInit {
         this.contract.on('VotingCreated', (_votingId, voteName) => {
             //console.log(`Voting Created: ${_votingId}, Name: ${voteName}`);
             votingId = _votingId;
+            console.log('event caught, ' + votingId);
         });
         const tx = await this.contract.createVote(_votingName, _candidates);
         await tx.wait();
