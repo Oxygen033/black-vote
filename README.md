@@ -15,7 +15,7 @@ work in progress...
 * Docker
 
 ### Installation
-(will be changed soon)
+**Only supports local network deployment, will be changed soon with configs and CI/CD changes**
 1. Clone the repo
 2. Install dependencies
    ```bash
@@ -39,8 +39,8 @@ work in progress...
    ```
 ## Roadmap
 
-- [ ] Frontend
-- [ ] Documentation
+- [ ] Frontend (will require moving repo folder up ohh nooo)
+- [x] Documentation
 - [ ] Testing
 - [ ] CI/СD
 - [ ] Better architecture with high-load support 
