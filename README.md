@@ -21,19 +21,20 @@ work in progress...
    ```bash
    yarn install
    ```
-3. Compile contract
+3. Create .env file and add line CONTRACT_DEPLOY_URL=[deployment address] (127.0.0.1:8545 by default for localhost)
+4. Compile contract
    ```bash
    npx hardhat compile
    ```
-4. Launch hardhat node
+5. Launch hardhat node
    ```bash
    npx hardhat node
    ```
-5. In separate terminal launch deploy script
+6. In separate terminal launch deploy script
    ```bash
    npx hardhat run src/blockchain/deploy.ts --network localhost
    ```
-6. Launch app itself
+7. Launch app itself
    ```bash
    yarn run start
    ```
