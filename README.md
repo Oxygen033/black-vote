@@ -12,12 +12,23 @@ work in progress...
 ### Prerequisites
 * NodeJS
 * yarn
-* Docker
+* Docker compose
 
 ### Installation
 **Only supports local network deployment, will be changed soon with configs and CI/CD changes**
 1. Clone the repo
-2. Install dependencies
+
+Using Docker Compose
+2. Go to /black-vote-backend. Create .env file and add line CONTRACT_DEPLOY_URL=[deployment address] (127.0.0.1:8545 by default for localhost)
+
+3. Run Docker Compose
+   ```bash
+   docker-compose up
+   ```
+
+Without Docker Compose
+
+2. Go to /black-vote-backend. Install dependencies
    ```bash
    yarn install
    ```
@@ -37,6 +48,15 @@ work in progress...
 7. Launch app itself
    ```bash
    yarn run start
+   ```
+8. Go to /black-vote-frontend.
+9. Install dependencies
+   ```bash
+   yarn install
+   ```
+10. Launch frontend
+   ```bash
+   yarn run dev
    ```
 ## Roadmap
 

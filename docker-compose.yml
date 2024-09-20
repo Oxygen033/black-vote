@@ -1,0 +1,33 @@
+services:
+  backend:
+    build: ./black-vote-backend
+    command: >
+      bash -c "
+        yarn install
+        npx hardhat node & 
+        sleep 10 && 
+        npx hardhat run src/blockchain/deploy.ts --network localhost &&
+        yarn run start"
+    volumes:
+      - ./black-vote-backend:/app
+    working_dir: /app
+    env_file:
+      - ./black-vote-backend/.env
+    ports:
+      - "8545:8545"
+      - "3000:3000"
+  
+  frontend:
+    build: ./black-vote-frontend
+    command: >
+      bash -c "
+        yarn install
+        yarn run dev"
+    volumes:
+      - ./black-vote-frontend:/app
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+  
