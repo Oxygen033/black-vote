@@ -40,7 +40,15 @@ work in progress...
    ```
 ## Roadmap
 
-- [ ] Frontend (will require moving repo folder up ohh nooo)
+- [ ] Backend
+   - [ ] Handle vote change (questionable)
+   - [ ] Checks
+   - [ ] Optimization 
+- [ ] Frontend
+   - [x] Stub
+   - [ ] Fix votes counts
+   - [ ] Modals fixes
+   - [ ] Styles
 - [x] Documentation
 - [ ] Testing
 - [ ] CI/СD

@@ -49,14 +49,22 @@ export class BlockchainService implements OnModuleInit {
     }
 
     async createVoting(_votingName: string, _candidates: string[]) {
-        let votingId: any;
-        this.contract.on('VotingCreated', (_votingId, voteName) => {
-            //console.log(`Voting Created: ${_votingId}, Name: ${voteName}`);
-            votingId = _votingId;
-            console.log('event caught, ' + votingId);
+        return new Promise(async (resolve, reject) => {
+            let votingId: string;
+
+            this.contract.once('VotingCreated', (_votingId, voteName) => {
+                votingId = _votingId;
+                console.log('event caught, ' + votingId);
+                resolve({ votingId: votingId, votingName: _votingName });
+            });
+
+            try {
+                const tx = await this.contract.createVote(_votingName, _candidates);
+                await tx.wait();
+            } catch (error) {
+                reject(error);
+            }
         });
-        const tx = await this.contract.createVote(_votingName, _candidates);
-        await tx.wait();
-        return { votingId: votingId, votingName: _votingName };
     }
+
 }
