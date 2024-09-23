@@ -7,19 +7,35 @@ contract Voting {
     struct OpenVoting {
         address author;
         string[] candidates;
-        mapping(address => bool) voters;
+        mapping(address => string) voterChoices;
         mapping(string => uint256) votes;
     }
 
     mapping(bytes32 => OpenVoting) private openVotings;
 
     function vote(bytes32 voteId, string memory candidate) public {
-        require(
-            !openVotings[voteId].voters[msg.sender],
-            'You have already voted.'
-        );
-        openVotings[voteId].voters[msg.sender] = true;
-        openVotings[voteId].votes[candidate]++;
+        bool validCandidate = false;
+        for (uint i = 0; i < openVotings[voteId].candidates.length; i++) {
+            if (
+                keccak256(
+                    abi.encodePacked(openVotings[voteId].candidates[i])
+                ) == keccak256(abi.encodePacked(candidate))
+            ) {
+                validCandidate = true;
+                break;
+            }
+        }
+        require(validCandidate, 'Invalid candidate');
+
+        OpenVoting storage voting = openVotings[voteId];
+
+        if (bytes(voting.voterChoices[msg.sender]).length != 0) {
+            string memory previousVote = voting.voterChoices[msg.sender];
+            voting.votes[previousVote]--;
+        }
+
+        voting.voterChoices[msg.sender] = candidate;
+        voting.votes[candidate]++;
     }
 
     function getVotes(
