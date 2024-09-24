@@ -61,7 +61,7 @@ Without Docker Compose
 ## Roadmap
 
 - [ ] Backend
-   - [ ] Handle vote change (questionable)
+   - [x] Handle vote change (questionable)
    - [ ] Checks
    - [ ] Optimization 
 - [ ] Frontend
