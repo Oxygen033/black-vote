@@ -26,7 +26,7 @@ Using Docker Compose
    docker-compose up
    ```
 
-Without Docker Compose
+Without Docker Compose]
 
 2. Go to /black-vote-backend. Install dependencies
    ```bash
